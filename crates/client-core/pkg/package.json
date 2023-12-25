@@ -1,0 +1,14 @@
+{
+  "name": "client-core",
+  "version": "0.1.0",
+  "files": [
+    "client_core_bg.wasm",
+    "client_core.js",
+    "client_core.d.ts"
+  ],
+  "module": "client_core.js",
+  "types": "client_core.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}
