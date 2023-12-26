@@ -6,6 +6,7 @@ import { useAtomValue } from "jotai";
 import RegistrationSection from "./registration-section";
 import Challenge1 from "./challenge-1";
 import Challenge2 from "./challenge-2";
+import Feedback from "./feedback";
 import { completedAtom, unlockedChallengesAtom } from "./store";
 
 export default function Home() {
@@ -41,6 +42,7 @@ export default function Home() {
             </Link>
             .
           </p>
+          <Feedback />
         </div>
       ) : null}
     </>
