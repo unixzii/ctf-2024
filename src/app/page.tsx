@@ -7,10 +7,15 @@ import RegistrationSection from "./registration-section";
 import Challenge1 from "./challenge-1";
 import Challenge2 from "./challenge-2";
 import Feedback from "./feedback";
-import { completedAtom, unlockedChallengesAtom } from "./store";
+import {
+  wantsFeedbackAtom,
+  completedAtom,
+  unlockedChallengesAtom,
+} from "./store";
 
 export default function Home() {
   const unlockedChallenges = useAtomValue(unlockedChallengesAtom);
+  const wantsFeedback = useAtomValue(wantsFeedbackAtom);
   const completed = useAtomValue(completedAtom);
 
   return (
@@ -42,7 +47,7 @@ export default function Home() {
             </Link>
             .
           </p>
-          <Feedback />
+          {wantsFeedback ? <Feedback /> : null}
         </div>
       ) : null}
     </>
