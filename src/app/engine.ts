@@ -4,7 +4,7 @@ import {
   getFlag1,
 } from "../../crates/client-core/pkg/client_core";
 
-type CommonAPIResponse = {
+export type CommonAPIResponse = {
   ok: boolean;
   err?: string;
 };

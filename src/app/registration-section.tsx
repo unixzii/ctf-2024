@@ -1,10 +1,29 @@
+import { useState } from "react";
 import { useAtom } from "jotai";
 
 import Input from "./input";
 import { usernameAtom } from "./store";
 import { isValidTwitterUsername } from "./utils";
+import type { CommonAPIResponse } from "./engine";
+
+async function doRegister(username: string): Promise<void> {
+  const resp = await fetch("/api/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      username,
+    }),
+  });
+  const respBody = (await resp.json()) as CommonAPIResponse;
+  if (!respBody.ok) {
+    throw new Error("failed to sign up: " + respBody.err);
+  }
+}
 
 export default function RegistrationSection() {
+  const [submitting, setSubmitting] = useState(false);
   const [username, setUsername] = useAtom(usernameAtom);
 
   return (
@@ -18,12 +37,26 @@ export default function RegistrationSection() {
         placeholder="Twitter ID"
         buttonLabel="Start"
         value={username}
+        busy={submitting}
         disabled={!!username}
-        onSubmit={(value) => {
-          if (isValidTwitterUsername(value)) {
-            setUsername(value);
-          } else {
+        onSubmit={async (value) => {
+          if (!isValidTwitterUsername(value)) {
             alert("Your input is not a valid Twitter username.");
+            return;
+          }
+
+          setSubmitting(true);
+
+          try {
+            await doRegister(value);
+            setUsername(value);
+          } catch (err) {
+            console.error(err);
+            alert(
+              "Failed to register your Twitter ID, please check console for more information."
+            );
+          } finally {
+            setSubmitting(false);
           }
         }}
       />

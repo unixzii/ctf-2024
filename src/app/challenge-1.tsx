@@ -33,6 +33,7 @@ export default function Challenge1() {
                 alert("The flag is wrong!");
               }
             } catch (err) {
+              console.error(err);
               alert(
                 "Failed to submit the flag, please check console for more information."
               );
