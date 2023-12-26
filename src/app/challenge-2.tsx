@@ -2,33 +2,33 @@ import { useState } from "react";
 import { useAtom, useAtomValue } from "jotai";
 
 import Input from "./input";
-import { submitFlag1 } from "./engine";
-import { usernameAtom, flag1Atom } from "./store";
+import { submitFlag2 } from "./engine";
+import { usernameAtom, flag2Atom } from "./store";
 import { nextTick } from "./utils";
 
-export default function Challenge1() {
+export default function Challenge2() {
   const [submitting, setSubmitting] = useState(false);
-  const [flag1, setFlag1] = useAtom(flag1Atom);
+  const [flag2, setFlag2] = useAtom(flag2Atom);
   const username = useAtomValue(usernameAtom);
 
   return (
     <>
       <h2 className="text-2xl font-bold mb-2">
-        Challenge 1 - Check In{flag1 ? " ✅" : ""}
+        Challenge 2 - Injection{flag2 ? " ✅" : ""}
       </h2>
       <Input
         placeholder="Flag"
         buttonLabel="Submit"
-        value={flag1}
+        value={flag2}
         busy={submitting}
-        disabled={!!flag1}
+        disabled={!!flag2}
         secret
         onSubmit={(value) => {
           setSubmitting(true);
           nextTick(async () => {
             try {
-              if (await submitFlag1(value, username!!)) {
-                setFlag1(value);
+              if (await submitFlag2(value, username!!)) {
+                setFlag2(value);
               } else {
                 alert("The flag is wrong!");
               }
@@ -42,13 +42,6 @@ export default function Challenge1() {
           });
         }}
       />
-      {flag1 ? (
-        <p className="text-zinc-500 italic">
-          Thanks for your participation! If you tried but still can’t find the
-          final flag, then you can quit now and receive your reward of this
-          stage.
-        </p>
-      ) : null}
     </>
   );
 }

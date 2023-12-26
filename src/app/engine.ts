@@ -4,6 +4,11 @@ import {
   getFlag1,
 } from "../../crates/client-core/pkg/client_core";
 
+type CommonAPIResponse = {
+  ok: boolean;
+  err?: string;
+};
+
 let initializing = false;
 let initialized = false;
 const initResolvers: Array<() => void> = [];
@@ -53,10 +58,12 @@ async function checkFlag1(flag: string): Promise<boolean> {
   return realFlag.length > 0 && flag === realFlag;
 }
 
-export async function submitFlag1(flag: string, username: string) {
+export async function submitFlag1(
+  flag: string,
+  username: string
+): Promise<boolean> {
   if (!(await checkFlag1(flag))) {
-    alert("The flag is wrong!");
-    return;
+    return false;
   }
 
   const resp = await fetch("/api/submit-flag?c=1&u=" + username, {
@@ -66,4 +73,17 @@ export async function submitFlag1(flag: string, username: string) {
     },
     body: flag,
   });
+  const respBody = (await resp.json()) as CommonAPIResponse;
+  if (!respBody.ok) {
+    throw new Error("failed to submit the flag: " + respBody.err);
+  }
+
+  return true;
+}
+
+export async function submitFlag2(
+  flag: string,
+  username: string
+): Promise<boolean> {
+  return false;
 }

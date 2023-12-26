@@ -23,7 +23,7 @@ export default function RootLayout({
           <div className="flex max-w-3xl w-full items-baseline justify-between mb-4">
             <div>
               <h1 className="text-4xl font-bold mb-2">CTF 2024</h1>
-              <p className="text-sm text-gray-600">Presented by Cyandev</p>
+              <p className="text-sm text-zinc-600">Presented by Cyandev</p>
             </div>
             <div className="flex gap-4">
               <Link className="text-blue-500 hover:underline" href="/">
