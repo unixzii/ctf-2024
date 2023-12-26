@@ -11,17 +11,7 @@ export default function Home() {
   const [username] = useAtom(usernameAtom);
 
   return (
-    <main className="flex min-h-screen flex-col items-center gap-12 p-24">
-      <div className="flex max-w-3xl w-full items-baseline justify-between mb-4">
-        <div>
-          <h1 className="text-4xl font-bold mb-2">CTF 2024</h1>
-          <p className="text-sm text-gray-600">Presented by Cyandev</p>
-        </div>
-        <Link className="text-blue-500 hover:underline" href="/rank">
-          Rank
-        </Link>
-      </div>
-
+    <>
       <div className="max-w-3xl w-full">
         <h2 className="text-2xl font-bold mb-2">Register Your Twitter ID</h2>
         <p>
@@ -48,7 +38,7 @@ export default function Home() {
               Congratulations. You’ve found the final flag! Repost this website
               via Twitter to receive your reward. You can also check out your
               rank{" "}
-              <Link className="text-blue-500 hover:underline" href="/rank">
+              <Link className="text-blue-500 hover:underline" href="/ranking">
                 here
               </Link>
               .
@@ -56,6 +46,6 @@ export default function Home() {
           </div>
         </>
       ) : null}
-    </main>
+    </>
   );
 }
