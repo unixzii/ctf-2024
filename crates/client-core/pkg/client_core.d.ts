@@ -1,28 +1,22 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
-* @param {any} check_flag_fn
 */
-export function init(check_flag_fn: any): void;
+export function init(): void;
 /**
-* @param {string} flag
-* @param {string} username
-* @returns {Promise<void>}
+* @param {number} protection_byte
+* @returns {string}
 */
-export function submitFlag1(flag: string, username: string): Promise<void>;
+export function getFlag1(protection_byte: number): string;
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
 
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
-  readonly init: (a: number) => void;
-  readonly submitFlag1: (a: number, b: number, c: number, d: number) => number;
-  readonly __wbindgen_malloc: (a: number, b: number) => number;
-  readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
-  readonly __wbindgen_export_2: WebAssembly.Table;
-  readonly _dyn_core__ops__function__FnMut__A____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__hfb3967fafd9e0ea5: (a: number, b: number, c: number) => void;
-  readonly __wbindgen_exn_store: (a: number) => void;
-  readonly wasm_bindgen__convert__closures__invoke2_mut__h9d5685b75e659131: (a: number, b: number, c: number, d: number) => void;
+  readonly init: () => void;
+  readonly getFlag1: (a: number, b: number) => void;
+  readonly __wbindgen_add_to_stack_pointer: (a: number) => number;
+  readonly __wbindgen_free: (a: number, b: number, c: number) => void;
 }
 
 export type SyncInitInput = BufferSource | WebAssembly.Module;

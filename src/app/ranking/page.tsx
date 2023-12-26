@@ -52,7 +52,7 @@ export default async function Ranking() {
         <table className="w-full border-separate border-spacing-0">
           <thead>
             <tr
-              className="*:px-2 *:py-2 *:text-left *:font-normal *:bg-zinc-900 *:text-zinc-300"
+              className="*:px-3 *:py-2 *:text-left *:font-normal *:bg-zinc-900 *:text-zinc-300"
               aria-roledescription="row"
             >
               <th className="border-t border-b border-l border-zinc-800 rounded-tl-md rounded-bl-md">
@@ -66,7 +66,7 @@ export default async function Ranking() {
           <tbody>
             {ranking.map((record, index) => (
               <tr
-                className="*:px-2 *:py-2 *:text-zinc-400 *:border-b *:border-zinc-800 *:last:border-transparent"
+                className="*:px-3 *:py-2 *:text-zinc-400 *:border-b *:border-zinc-800 *:last:border-transparent"
                 key={record.username}
               >
                 <td>{`#${index + 1}`}</td>

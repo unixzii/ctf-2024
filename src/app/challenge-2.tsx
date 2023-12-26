@@ -6,7 +6,7 @@ export default function Challenge2() {
   return (
     <Challenge
       flagAtom={flag2Atom}
-      title="Challenge 1 - Check In"
+      title="Challenge 2 - Bytecode"
       onSubmit={submitFlag2}
     />
   );
