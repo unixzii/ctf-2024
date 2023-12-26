@@ -1,7 +1,7 @@
 import {
   initSync,
   init,
-  submitFlag1 as rustSubmitFlag1,
+  getFlag1,
 } from "../../crates/client-core/pkg/client_core";
 
 let initializing = false;
@@ -31,7 +31,7 @@ async function initRust() {
     const wasmBinary = await (await fetch(wasmUrl)).arrayBuffer();
     initSync(wasmBinary);
 
-    init(checkFlag1);
+    init();
 
     initialized = true;
     initializing = false;
@@ -43,11 +43,27 @@ async function initRust() {
   }
 }
 
-function checkFlag1(flag: string): boolean {
-  return flag === "v85t7z!b";
+async function checkFlag1(flag: string): Promise<boolean> {
+  await initRust();
+  if (!/^[a-zA-Z0-9!]{8}$/.test(flag)) {
+    return false;
+  }
+  const protectionByte = flag.charCodeAt(0);
+  const realFlag = getFlag1(protectionByte);
+  return realFlag.length > 0 && flag === realFlag;
 }
 
 export async function submitFlag1(flag: string, username: string) {
-  await initRust();
-  await rustSubmitFlag1(flag, username);
+  if (!(await checkFlag1(flag))) {
+    alert("The flag is wrong!");
+    return;
+  }
+
+  const resp = await fetch("/api/submit-flag?c=1&u=" + username, {
+    method: "POST",
+    headers: {
+      "Content-Type": "text/plain",
+    },
+    body: flag,
+  });
 }

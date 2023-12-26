@@ -9,6 +9,7 @@ export default function RegistrationSection() {
 
   return (
     <Input
+      placeholder="Twitter ID"
       buttonLabel="Start"
       value={username}
       disabled={!!username}

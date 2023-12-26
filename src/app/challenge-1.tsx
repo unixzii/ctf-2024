@@ -12,8 +12,10 @@ export default function Challenge1() {
 
   return (
     <Input
+      placeholder="Flag"
       buttonLabel="Submit"
       busy={submitting}
+      secret
       onSubmit={(value) => {
         setSubmitting(true);
         nextTick(async () => {

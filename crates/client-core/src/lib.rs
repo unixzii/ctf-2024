@@ -1,51 +1,47 @@
-use std::sync::Mutex;
+#[cfg(debug_assertions)]
+use std::panic;
 
 use wasm_bindgen::prelude::*;
-use wasm_bindgen_futures::JsFuture;
-use web_sys::console;
-use web_sys::js_sys::Function;
-use web_sys::window;
-use web_sys::Request;
-use web_sys::RequestInit;
-
-struct JsValueWrapper(JsValue);
-
-unsafe impl Send for JsValueWrapper {}
-
-static CHECK_FLAG_FN: Mutex<Option<JsValueWrapper>> = Mutex::new(None);
 
 #[wasm_bindgen]
-pub fn init(check_flag_fn: JsValue) {
-    let mut lock_guard = CHECK_FLAG_FN.lock().unwrap();
-    *lock_guard = Some(JsValueWrapper(check_flag_fn));
+pub fn init() {
+    #[cfg(debug_assertions)]
+    panic::set_hook(Box::new(console_error_panic_hook::hook));
 }
 
-#[wasm_bindgen(js_name = submitFlag1)]
-pub async fn submit_flag_1(flag: &str, username: &str) {
-    let check_flag_fn_guard = CHECK_FLAG_FN.lock().unwrap();
-    let check_flag_fn = Function::from(check_flag_fn_guard.as_ref().unwrap().0.clone());
-
-    let window = window().unwrap();
-
-    let result = check_flag_fn
-        .call1(&JsValue::NULL, &JsValue::from(flag))
-        .unwrap();
-    if !result.as_bool().unwrap_or(false) {
-        window
-            .alert_with_message("Sorry, but the flag is incorrect.")
-            .unwrap();
-        return;
+#[wasm_bindgen(js_name = getFlag1)]
+pub fn get_flag_1(protection_byte: u8) -> String {
+    #[cold]
+    #[inline(never)]
+    fn a(n: u8) -> u8 {
+        if n > 8 {
+            return n - 8;
+        }
+        return n;
     }
 
-    let mut request_init = RequestInit::new();
-    request_init.method("POST");
-    request_init.body(Some(&JsValue::from(flag)));
-    let request = Request::new_with_str_and_init(
-        &format!("/api/submit-flag1?username={}", username),
-        &request_init,
-    )
-    .unwrap();
-    let fetch_fut = JsFuture::from(window.fetch_with_request(&request));
-    let resp = fetch_fut.await.unwrap();
-    console::log_1(&resp);
+    #[cold]
+    #[inline(never)]
+    fn b(n: u8) -> u8 {
+        if n % 2 != 0 {
+            return 0;
+        }
+        return n / 2;
+    }
+
+    let c = b(a(protection_byte));
+
+    if c < 50 || c >= 60 {
+        return String::new();
+    }
+
+    let seq = [5, 7, 2, 0, 2, 4, 1, 3, 6, 8].to_vec();
+    if seq[(c - 50) as usize] != 4 {
+        return String::new();
+    }
+
+    let mut flag = "85t7z!b".to_owned();
+    flag.insert_str(0, "v");
+
+    return flag;
 }

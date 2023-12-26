@@ -4,13 +4,15 @@ export interface InputProps {
   placeholder?: string;
   buttonLabel: string;
   busy?: boolean;
+  secret?: boolean;
   disabled?: boolean;
   value?: string;
   onSubmit?: (value: string) => void;
 }
 
 export default function Input(props: InputProps) {
-  const { placeholder, buttonLabel, disabled, busy, value, onSubmit } = props;
+  const { placeholder, buttonLabel, disabled, busy, secret, value, onSubmit } =
+    props;
   const [inputValue, setInputValue] = useState("");
 
   return (
@@ -18,6 +20,7 @@ export default function Input(props: InputProps) {
       <input
         className="w-52 px-2 py-1 border bg-zinc-800 border-transparent placeholder:text-zinc-500 hover:bg-zinc-700 focus:bg-zinc-900 focus:border-zinc-600 disabled:bg-transparent disabled:border-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed outline-none rounded-md transition-colors duration-200"
         placeholder={placeholder}
+        type={secret ? "password" : "text"}
         disabled={disabled}
         value={value ? value : inputValue}
         onChange={(e) => {
