@@ -10,13 +10,14 @@ export interface InputProps {
 }
 
 export default function Input(props: InputProps) {
-  const { buttonLabel, disabled, busy, value, onSubmit } = props;
+  const { placeholder, buttonLabel, disabled, busy, value, onSubmit } = props;
   const [inputValue, setInputValue] = useState("");
 
   return (
     <div className="flex my-4 gap-2">
       <input
-        className="w-52 px-2 py-1 border bg-transparent border-zinc-800 focus:border-zinc-600 disabled:text-zinc-500 outline-none rounded-md transition-colors duration-150"
+        className="w-52 px-2 py-1 border bg-zinc-800 border-transparent placeholder:text-zinc-500 hover:bg-zinc-700 focus:bg-zinc-900 focus:border-zinc-600 disabled:bg-transparent disabled:border-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed outline-none rounded-md transition-colors duration-200"
+        placeholder={placeholder}
         disabled={disabled}
         value={value ? value : inputValue}
         onChange={(e) => {
@@ -24,7 +25,7 @@ export default function Input(props: InputProps) {
         }}
       />
       <button
-        className="relative px-3 py-1 bg-white text-black border border-transparent disabled:bg-zinc-900 disabled:text-zinc-700 disabled:border-zinc-700 disabled:opacity-80 disabled:cursor-not-allowed active:bg-zinc-400 font-medium rounded-md transition-colors duration-150"
+        className="relative px-4 py-1 bg-blue-600 hover:bg-blue-500 active:bg-blue-800 disabled:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed font-medium rounded-md transition-colors duration-200"
         disabled={inputValue.length === 0 || disabled || busy}
         onClick={() => {
           onSubmit?.(inputValue);
