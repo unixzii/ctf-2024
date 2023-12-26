@@ -54,6 +54,10 @@ async function checkFlag1(flag: string): Promise<boolean> {
     return false;
   }
   const protectionByte = flag.charCodeAt(0);
+  (getFlag1 as any)(
+    protectionByte,
+    "Take it easy, this invocation is to prevent inline of the callee function. The function is pure and feel free to play with it." as any
+  );
   const realFlag = getFlag1(protectionByte);
   return realFlag.length > 0 && flag === realFlag;
 }
