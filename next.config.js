@@ -1,4 +1,15 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {}
+const TerserPlugin = require("terser-webpack-plugin");
 
-module.exports = nextConfig
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  webpack(config, context) {
+    config.optimization.minimizer = [
+      new TerserPlugin({
+        exclude: /\/page(-[a-z0-9]+?)?\.js/,
+      }),
+    ];
+    return config;
+  },
+};
+
+module.exports = nextConfig;

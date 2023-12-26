@@ -21,7 +21,9 @@ export default function Input(props: InputProps) {
         className="w-52 px-2 py-1 border bg-zinc-800 border-transparent placeholder:text-zinc-500 hover:bg-zinc-700 focus:bg-zinc-900 focus:border-zinc-600 disabled:bg-transparent disabled:border-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed outline-none rounded-md transition-colors duration-200"
         placeholder={placeholder}
         type={secret ? "password" : "text"}
+        autoComplete="off"
         disabled={disabled}
+        data-1p-ignore
         value={value ? value : inputValue}
         onChange={(e) => {
           setInputValue(e.target.value);
