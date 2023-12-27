@@ -8,6 +8,24 @@ import {
 import { useAtom } from "jotai";
 
 import { wantsFeedbackAtom } from "./store";
+import type { CommonAPIResponse } from "./backend-api";
+
+const feedbackItems = ["boring", "easy", "moderate", "hard", "wtf"];
+async function doFeedback(index: number): Promise<void> {
+  const resp = await fetch("/api/feedback", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      item: feedbackItems[index],
+    }),
+  });
+  const respBody = (await resp.json()) as CommonAPIResponse;
+  if (!respBody.ok) {
+    throw new Error("failed to submit feedback: " + respBody.err);
+  }
+}
 
 interface FeedbackButtonProps {
   emoji: string;
@@ -64,6 +82,8 @@ export default function Feedback() {
         if (oldValue) {
           return true;
         }
+
+        doFeedback(index);
 
         setWantsFeedback(false);
         setTimeout(() => {
