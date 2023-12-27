@@ -1,19 +1,11 @@
-import {
-  initSync,
-  init,
-  getFlag1,
-} from "../../crates/client-core/pkg/client_core";
-
-export type CommonAPIResponse = {
-  ok: boolean;
-  err?: string;
-};
+import { initSync } from "../../crates/client-core/pkg/client_core";
+export { getFlag1 } from "../../crates/client-core/pkg/client_core";
 
 let initializing = false;
 let initialized = false;
 const initResolvers: Array<() => void> = [];
 
-async function initRust() {
+export async function initRust() {
   if (initialized) {
     return;
   }
@@ -36,8 +28,6 @@ async function initRust() {
     const wasmBinary = await (await fetch(wasmUrl)).arrayBuffer();
     initSync(wasmBinary);
 
-    init();
-
     initialized = true;
     initializing = false;
 
@@ -46,44 +36,4 @@ async function initRust() {
     }
     initResolvers.splice(0, initResolvers.length);
   }
-}
-
-async function checkFlag1(flag: string): Promise<boolean> {
-  await initRust();
-  if (!/^[a-zA-Z0-9!]{8}$/.test(flag)) {
-    return false;
-  }
-  const protectionByte = flag.charCodeAt(0);
-  const realFlag = getFlag1(protectionByte);
-  return realFlag.length > 0 && flag === realFlag;
-}
-
-export async function submitFlag1(
-  flag: string,
-  username: string
-): Promise<boolean> {
-  if (!(await checkFlag1(flag))) {
-    return false;
-  }
-
-  const resp = await fetch("/api/submit-flag?c=1&u=" + username, {
-    method: "POST",
-    headers: {
-      "Content-Type": "text/plain",
-    },
-    body: flag,
-  });
-  const respBody = (await resp.json()) as CommonAPIResponse;
-  if (!respBody.ok) {
-    throw new Error("failed to submit the flag: " + respBody.err);
-  }
-
-  return true;
-}
-
-export async function submitFlag2(
-  flag: string,
-  username: string
-): Promise<boolean> {
-  return true;
 }

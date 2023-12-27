@@ -1,6 +1,32 @@
-import { submitFlag1 } from "./engine";
+import { initRust, getFlag1 } from "./engine";
 import { flag1Atom } from "./store";
+import { submitFlag } from "./backend-api";
 import Challenge from "./challenge";
+
+/*
+  Voila!
+  You've found the right place. Now let's get these puzzles resolved.
+ */
+void 0;
+
+async function checkFlag1(flag: string): Promise<boolean> {
+  await initRust();
+  if (!/^[a-zA-Z0-9!]{8}$/.test(flag)) {
+    return false;
+  }
+  const protectionByte = flag.charCodeAt(0);
+  const realFlag = getFlag1(protectionByte);
+  return realFlag.length > 0 && flag === realFlag;
+}
+
+async function submitFlag1(flag: string, username: string): Promise<boolean> {
+  if (!(await checkFlag1(flag))) {
+    return false;
+  }
+
+  await submitFlag(1, username, flag);
+  return true;
+}
 
 export default function Challenge1() {
   return (

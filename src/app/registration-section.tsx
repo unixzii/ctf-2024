@@ -4,7 +4,7 @@ import { useAtom } from "jotai";
 import Input from "./input";
 import { usernameAtom } from "./store";
 import { isValidTwitterUsername } from "./utils";
-import type { CommonAPIResponse } from "./engine";
+import type { CommonAPIResponse } from "./backend-api";
 
 async function doRegister(username: string): Promise<void> {
   const resp = await fetch("/api/register", {

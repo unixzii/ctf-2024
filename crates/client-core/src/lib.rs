@@ -3,8 +3,8 @@ use std::panic;
 
 use wasm_bindgen::prelude::*;
 
-#[wasm_bindgen]
-pub fn init() {
+#[wasm_bindgen(start)]
+fn start() {
     #[cfg(debug_assertions)]
     panic::set_hook(Box::new(console_error_panic_hook::hook));
 }
