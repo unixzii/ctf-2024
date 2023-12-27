@@ -1,3 +1,7 @@
+#![feature(ascii_char)]
+
+mod humble_vm;
+
 #[cfg(debug_assertions)]
 use std::panic;
 
@@ -44,4 +48,21 @@ pub fn get_flag_1(protection_byte: u8) -> String {
     flag.insert_str(0, "v");
 
     return flag;
+}
+
+#[wasm_bindgen]
+pub fn mangle(s: &str) -> Vec<u8> {
+    if s.len() > 255 {
+        return vec![];
+    }
+
+    let mut res = vec![(s.len() as u8) ^ 0xaa];
+
+    res.extend(
+        s.chars()
+            .filter_map(|c| c.as_ascii())
+            .map(|c| c.to_u8() ^ 0xaa),
+    );
+
+    res
 }

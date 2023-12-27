@@ -1,5 +1,9 @@
 import { initSync } from "../../crates/client-core/pkg/client_core";
-export { getFlag1 } from "../../crates/client-core/pkg/client_core";
+export {
+  getFlag1,
+  mangle,
+  HumbleVM,
+} from "../../crates/client-core/pkg/client_core";
 
 let initializing = false;
 let initialized = false;

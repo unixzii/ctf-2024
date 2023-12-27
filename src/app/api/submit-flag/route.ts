@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
 
   console.log("user did submit: ", { challenge, user, flag });
 
-  const realFlag = challenge === 1 ? "v85t7z!b" : "xxxxxxxx";
+  const realFlag = challenge === 1 ? "v85t7z!b" : "0zc1@jp4";
   if (realFlag !== flag) {
     return NextResponse.json(
       { ok: false, err: "flag is wrong" },
