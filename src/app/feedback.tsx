@@ -1,4 +1,13 @@
-import { useCallback, useLayoutEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+import { useAtom } from "jotai";
+
+import { wantsFeedbackAtom } from "./store";
 
 interface FeedbackButtonProps {
   emoji: string;
@@ -46,14 +55,36 @@ function FeedbackButton(props: FeedbackButtonProps) {
 
 export default function Feedback() {
   const [submitted, setSubmitted] = useState(false);
+  const [wantsFeedback, setWantsFeedback] = useAtom(wantsFeedbackAtom);
+  const [show, setShow] = useState(wantsFeedback);
+
   const handleFeedback = useCallback(
     (index: number) => {
       setSubmitted((oldValue) => {
+        if (oldValue) {
+          return true;
+        }
+
+        setWantsFeedback(false);
+        setTimeout(() => {
+          setShow(false);
+        }, 3000);
+
         return true;
       });
     },
-    [setSubmitted]
+    [setSubmitted, setWantsFeedback, setShow]
   );
+
+  useEffect(() => {
+    if (wantsFeedback) {
+      setShow(true);
+    }
+  }, [setShow, wantsFeedback]);
+
+  if (!show) {
+    return null;
+  }
 
   return (
     <div className="relative mt-6 py-5 border rounded-md bg-zinc-950 border-zinc-800 text-center overflow-hidden">
