@@ -18,11 +18,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.png" />
+      </head>
       <body className={inter.className}>
         <main className="flex min-h-screen flex-col items-center gap-12 p-24">
           <div className="flex max-w-3xl w-full items-baseline justify-between mb-4">
             <div>
-              <h1 className="text-4xl font-bold mb-2">CTF 2024</h1>
+              <h1 className="text-4xl font-bold mb-2">🏳️ CTF 2024</h1>
               <p className="text-sm text-zinc-600">Presented by Cyandev</p>
             </div>
             <div className="flex gap-4">
