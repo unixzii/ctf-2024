@@ -75,25 +75,24 @@ export default function Feedback() {
   const [submitted, setSubmitted] = useState(false);
   const [wantsFeedback, setWantsFeedback] = useAtom(wantsFeedbackAtom);
   const [show, setShow] = useState(wantsFeedback);
+  const feedbackToken = useRef(1);
 
   const handleFeedback = useCallback(
     (index: number) => {
-      setSubmitted((oldValue) => {
-        if (oldValue) {
-          return true;
-        }
+      setSubmitted(true);
+      setWantsFeedback(false);
 
-        doFeedback(index);
+      if (!feedbackToken.current) {
+        return;
+      }
+      feedbackToken.current = 0;
 
-        setWantsFeedback(false);
-        setTimeout(() => {
-          setShow(false);
-        }, 3000);
-
-        return true;
-      });
+      doFeedback(index);
+      setTimeout(() => {
+        setShow(false);
+      }, 3000);
     },
-    [setSubmitted, setWantsFeedback, setShow]
+    [setSubmitted, setWantsFeedback, setShow, feedbackToken]
   );
 
   useEffect(() => {
