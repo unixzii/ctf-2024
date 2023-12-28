@@ -38,7 +38,23 @@ export async function POST(request: NextRequest) {
   }
 
   const redis = Redis.fromEnv();
-  await redis.hsetnx("ranking", `${user}:${challenge}`, Date.now());
+  const script = redis.createScript(`
+    if redis.call('SISMEMBER', KEYS[2], ARGV[1]) ~= 1 then
+      return false
+    end
+    redis.call('HSETNX', KEYS[1], ARGV[1] .. ':' .. ARGV[2], ARGV[3])
+    return true
+  `);
+  const result = (await script.eval(
+    ["ranking", "users"],
+    [user, `${challenge}`, `${Date.now()}`]
+  )) as boolean;
+  if (!result) {
+    return NextResponse.json(
+      { ok: false, err: "request is unauthorized" },
+      { status: 401 }
+    );
+  }
 
   return NextResponse.json(
     {
