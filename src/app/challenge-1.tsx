@@ -1,4 +1,4 @@
-import { initRust, getFlag1 } from "./engine";
+import { initRust, getFlag1 } from "./rust-sdk";
 import { flag1Atom } from "./store";
 import { submitFlag } from "./backend-api";
 import Challenge from "./challenge";

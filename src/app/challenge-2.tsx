@@ -1,4 +1,4 @@
-import { initRust, mangle, HumbleVM } from "./engine";
+import { initRust, mangle, HumbleVM } from "./rust-sdk";
 import { flag2Atom } from "./store";
 import { submitFlag } from "./backend-api";
 import Challenge from "./challenge";

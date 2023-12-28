@@ -3,6 +3,7 @@ export {
   getFlag1,
   mangle,
   HumbleVM,
+  getSubmitUrl,
 } from "../../crates/client-core/pkg/client_core";
 
 let initializing = false;

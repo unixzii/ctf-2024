@@ -14,6 +14,13 @@ export function getFlag1(protection_byte: number): string;
 */
 export function mangle(s: string): Uint8Array;
 /**
+* @param {number} challenge
+* @param {string} username
+* @param {string} flag
+* @returns {string}
+*/
+export function getSubmitUrl(challenge: number, username: string, flag: string): string;
+/**
 */
 export class HumbleVM {
   free(): void;
@@ -39,17 +46,18 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
+  readonly start: () => void;
+  readonly getFlag1: (a: number, b: number) => void;
+  readonly mangle: (a: number, b: number, c: number) => void;
+  readonly getSubmitUrl: (a: number, b: number, c: number, d: number, e: number, f: number) => void;
   readonly __wbg_humblevm_free: (a: number) => void;
   readonly humblevm_new: () => number;
   readonly humblevm_loadCode: (a: number, b: number, c: number, d: number) => void;
   readonly humblevm_run: (a: number, b: number, c: number, d: number) => void;
   readonly humblevm_dumpCode: (a: number, b: number) => void;
-  readonly start: () => void;
-  readonly getFlag1: (a: number, b: number) => void;
-  readonly mangle: (a: number, b: number, c: number) => void;
   readonly __wbindgen_add_to_stack_pointer: (a: number) => number;
-  readonly __wbindgen_malloc: (a: number, b: number) => number;
   readonly __wbindgen_free: (a: number, b: number, c: number) => void;
+  readonly __wbindgen_malloc: (a: number, b: number) => number;
   readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
   readonly __wbindgen_start: () => void;
 }

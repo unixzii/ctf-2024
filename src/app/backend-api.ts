@@ -1,3 +1,5 @@
+import { getSubmitUrl } from "./rust-sdk";
+
 export type CommonAPIResponse = {
   ok: boolean;
   err?: string;
@@ -8,7 +10,8 @@ export async function submitFlag(
   username: string,
   flag: string
 ): Promise<void> {
-  const resp = await fetch(`/api/submit-flag?c=${challenge}&u=${username}`, {
+  const url = getSubmitUrl(challenge, username, flag);
+  const resp = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "text/plain",

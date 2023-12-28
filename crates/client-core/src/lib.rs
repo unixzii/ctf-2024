@@ -66,3 +66,33 @@ pub fn mangle(s: &str) -> Vec<u8> {
 
     res
 }
+
+#[wasm_bindgen(js_name = "getSubmitUrl")]
+pub fn get_submit_url(challenge: u32, username: &str, flag: &str) -> Result<String, String> {
+    let checksum = crc32fast::hash(flag.as_bytes());
+    let expected_checksum = match challenge {
+        1 => 3620553811,
+        2 => 1779004475,
+        _ => {
+            return Err("challenge id is invalid".to_string());
+        }
+    };
+    if checksum != expected_checksum {
+        return Err("you are not allowed to access the API endpoint now".to_owned());
+    }
+
+    return Ok(format!("/api/submit-flag?c={challenge}&u={username}"));
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::get_submit_url;
+
+    #[test]
+    fn test_get_submit_url() {
+        let url = get_submit_url(1, "test", "v85t7z!b").unwrap();
+        assert_eq!(url, "/api/submit-flag?c=1&u=test");
+        let url = get_submit_url(2, "test", "0zc1@jp4").unwrap();
+        assert_eq!(url, "/api/submit-flag?c=2&u=test");
+    }
+}
