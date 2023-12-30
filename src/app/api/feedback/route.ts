@@ -4,12 +4,10 @@ import { Redis } from "@upstash/redis";
 
 export const runtime = "edge";
 
-const validItems = new Set(["boring", "easy", "moderate", "hard", "wtf"]);
-
 export async function POST(request: NextRequest) {
-  let payload: unknown;
+  let payload;
   try {
-    payload = await request.json();
+    payload = (await request.json()) as { username?: string; item?: number };
   } catch (err) {
     console.error("invalid payload", err);
     return NextResponse.json(
@@ -23,12 +21,11 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const item = (payload as { item?: string }).item;
-  if (!item || !validItems.has(item)) {
+  if (!payload.username || payload.item?.constructor !== Number) {
     return NextResponse.json(
       {
         ok: false,
-        err: "invalid item",
+        err: "invalid payload",
       },
       {
         status: 400,
@@ -37,7 +34,23 @@ export async function POST(request: NextRequest) {
   }
 
   const redis = Redis.fromEnv();
-  await redis.hincrby("feedbacks", item, 1);
+  const script = redis.createScript(`
+    if redis.call('SISMEMBER', KEYS[2], ARGV[1]) ~= 1 then
+      return false
+    end
+    redis.call('HSET', KEYS[1], ARGV[1], ARGV[2])
+    return true
+  `);
+  const result = (await script.eval(
+    ["feedbacks", "users"],
+    [payload.username || "", `${payload.item}`]
+  )) as boolean;
+  if (!result) {
+    return NextResponse.json(
+      { ok: false, err: "request is unauthorized" },
+      { status: 401 }
+    );
+  }
 
   return NextResponse.json(
     {

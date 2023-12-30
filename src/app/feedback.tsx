@@ -5,20 +5,20 @@ import {
   useRef,
   useState,
 } from "react";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 
-import { wantsFeedbackAtom } from "./store";
+import { wantsFeedbackAtom, usernameAtom } from "./store";
 import type { CommonAPIResponse } from "./backend-api";
 
-const feedbackItems = ["boring", "easy", "moderate", "hard", "wtf"];
-async function doFeedback(index: number): Promise<void> {
+async function doFeedback(username: string, index: number): Promise<void> {
   const resp = await fetch("/api/feedback", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      item: feedbackItems[index],
+      username,
+      item: index,
     }),
   });
   const respBody = (await resp.json()) as CommonAPIResponse;
@@ -74,11 +74,16 @@ function FeedbackButton(props: FeedbackButtonProps) {
 export default function Feedback() {
   const [submitted, setSubmitted] = useState(false);
   const [wantsFeedback, setWantsFeedback] = useAtom(wantsFeedbackAtom);
+  const username = useAtomValue(usernameAtom);
   const [show, setShow] = useState(wantsFeedback);
   const feedbackToken = useRef(1);
 
   const handleFeedback = useCallback(
     (index: number) => {
+      if (!username) {
+        return;
+      }
+
       setSubmitted(true);
       setWantsFeedback(false);
 
@@ -87,12 +92,12 @@ export default function Feedback() {
       }
       feedbackToken.current = 0;
 
-      doFeedback(index);
+      doFeedback(username, index);
       setTimeout(() => {
         setShow(false);
       }, 3000);
     },
-    [setSubmitted, setWantsFeedback, setShow, feedbackToken]
+    [setSubmitted, setWantsFeedback, username, setShow, feedbackToken]
   );
 
   useEffect(() => {
