@@ -50,6 +50,9 @@ export default function RootLayout({
               <Link className="text-blue-500 hover:underline" href="/ranking">
                 Ranking
               </Link>
+              <Link className="text-blue-500 hover:underline" href="/redeem">
+                Redeem Code
+              </Link>
             </div>
           </div>
           {children}
