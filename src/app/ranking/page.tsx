@@ -71,7 +71,12 @@ export default async function Ranking() {
               >
                 <td>{`#${index + 1}`}</td>
                 <td>
-                  {record.username}
+                  <a
+                    className="text-blue-500 hover:underline"
+                    href={`https://twitter.com/${record.username}`}
+                  >
+                    {record.username}
+                  </a>
                   {record.completed ? " 🎉" : ""}
                 </td>
               </tr>
