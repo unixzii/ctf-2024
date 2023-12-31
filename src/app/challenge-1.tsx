@@ -9,7 +9,7 @@ import Challenge from "./challenge";
  */
 void 0;
 
-async function checkFlag1(flag: string): Promise<boolean> {
+export async function checkFlag1(flag: string): Promise<boolean> {
   await initRust();
   if (!/^[a-zA-Z0-9!]{8}$/.test(flag)) {
     return false;
